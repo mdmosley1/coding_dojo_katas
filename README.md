@@ -1,0 +1,1 @@
+A repository for working through coding katas from codingdojo.org
