@@ -43,20 +43,20 @@ public:
     // schema. Flags always have a minus sign prepended to them
     auto newString = EraseWhiteSpace(cmdLineArgs);
 
+    if (newString.size() < 2)
+      return ErrorCodes::UNRECOGNIZED_FLAG;
+
     // find all flags and verify that no unrecognized flags were
     // passed
-    bool foundMinusSign = false;
-    for (auto c : newString) {
-      if (foundMinusSign) {
-	foundMinusSign = false;
+    for (int index = 0; index < newString.size()-1; ++index) {
+      if (newString[index] == '-'){
+	char nextLetter = newString[index+1];
 	// if last char was a minus, then this char is the flag
-	if (schema_.find(c) == schema_.end()) {
-	  std::cout << "Arg " << c << " not recognized!" << std::endl;
+	if (schema_.find(nextLetter) == schema_.end()) {
+	  std::cout << "Arg " << nextLetter << " not recognized!" << std::endl;
 	  return ErrorCodes::UNRECOGNIZED_FLAG;
 	}
       }
-      if (c == '-')
-	foundMinusSign = true;
     }
     return ErrorCodes::OK;
   }
