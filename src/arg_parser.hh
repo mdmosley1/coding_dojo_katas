@@ -38,11 +38,7 @@ public:
        that's an error.
     */
 
-  ErrorCodes Parse(const std::string& cmdLineArgs) {
-    // parse the arguments to find expected flags that were set in the
-    // schema. Flags always have a minus sign prepended to them
-    auto newString = EraseWhiteSpace(cmdLineArgs);
-
+  ErrorCodes ValidateString(const std::string& newString) {
     if (newString.size() < 2)
       return ErrorCodes::UNRECOGNIZED_FLAG;
 
@@ -59,6 +55,16 @@ public:
       }
     }
     return ErrorCodes::OK;
+  }
+
+  ErrorCodes Parse(const std::string& cmdLineArgs) {
+    // parse the arguments to find expected flags that were set in the
+    // schema. Flags always have a minus sign prepended to them
+    auto newString = EraseWhiteSpace(cmdLineArgs);
+
+    auto retVal = ValidateString(newString);
+
+    return retVal;
   }
 
   bool HasArg(const char flag) {
