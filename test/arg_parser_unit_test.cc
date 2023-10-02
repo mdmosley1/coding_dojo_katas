@@ -2,10 +2,20 @@
 
 // Include your header files with the tests to be performed
 #include "arg_parser.hh"
+#include <string>
 
-TEST(ArgParser, ParsesOneArgument) { 
-  ArgParser arg;
-  ASSERT_EQ(1+1,2);
+// TODO:
+// allow making flags optional or required
+
+TEST(ArgParser, ReturnsErrorIfFlagIsNotRecognized) { 
+  ArgParser argParse;
+  std::string cmdLineArgs = "-i 12";
+  
+  argParse.AddOption('z');
+
+  // TODO: rewrite error handling to use std::optional instead of
+  // return enum
+  ASSERT_EQ(argParse.Parse(cmdLineArgs), ErrorCodes::UNRECOGNIZED_FLAG);
 }
 
 int main(int argc, char** argv) {
