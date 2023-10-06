@@ -18,9 +18,9 @@ TEST(ArgParser, ParsesTwoArgs) {
   ASSERT_EQ(args('b'), "there");
 }
 
-// TEST(ArgParser, ReturnsEmptyIfUnrecognizedFlag) { 
-//   ASSERT_EQ(ArgParse("a", "-b 2"), std::function);
-// }
+TEST(ArgParser, ReturnsEmptyIfUnrecognizedFlag) { 
+  ASSERT_EQ(ArgParse("a", "-b 2")('a'), "");
+}
 
 /*
   Alternatively try an interface like this:
