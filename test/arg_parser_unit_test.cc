@@ -11,6 +11,13 @@ TEST(ArgParser, ParsesOneArg) {
   ASSERT_EQ(ArgParse("a", "-a hello")('a'), "hello");
 }
 
+TEST(ArgParser, ParsesTwoArgs) { 
+  auto args = ArgParse("ab", "-a hello -b there");
+
+  ASSERT_EQ(args('a'), "hello");
+  ASSERT_EQ(args('b'), "there");
+}
+
 // TEST(ArgParser, ReturnsEmptyIfUnrecognizedFlag) { 
 //   ASSERT_EQ(ArgParse("a", "-b 2"), std::function);
 // }
