@@ -26,6 +26,8 @@ TEST(ArgParser, ReturnsEmptyIfUnrecognizedFlag) {
   ASSERT_EQ(ArgParse("a", "-a 2")('b'), "");
 }
 
+// TODO figure out if I can handle erros with std::optional
+
 /*
   Alternatively try an interface like this:
 

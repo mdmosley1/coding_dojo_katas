@@ -63,7 +63,7 @@ std::string EraseWhiteSpace(const std::string& str)
   that's an error.
 */
 
-std::string Parse(std::string schema, std::string args, char query) {
+std::string Parse(std::map<char, std::string> flagsMap, char query) {
   // for each element in the args list, check if it does not exist in
   // the scehma, return error.
   // if (!ValidateString(argsNoSpace, schema))
@@ -71,6 +71,11 @@ std::string Parse(std::string schema, std::string args, char query) {
 
   // for each element in schema, find the arg in args list. If it
   // exists, then store it in a map
+  return flagsMap[query];
+}
+
+auto ArgParse(std::string schema, std::string args)
+{
   std::map<char, std::string> flagsMap;
 
   const char whitespace = ' ';
@@ -79,7 +84,6 @@ std::string Parse(std::string schema, std::string args, char query) {
   for (auto flag : schema) {
     std::string minus = "-";
     std::string query = minus.append(1, flag); 
-
     
     for (int w = 0; w < words.size(); ++w) {
       std::string word = words[w];
@@ -87,14 +91,9 @@ std::string Parse(std::string schema, std::string args, char query) {
 	flagsMap[flag] = words[w+1];
     }
   }
-  
-  return flagsMap[query];
-}
 
-auto ArgParse(std::string schema, std::string args)
-{
-  return [schema, args](char query ) {
-    return Parse(schema, args, query);
+  return [flagsMap](char query ) {
+    return Parse(flagsMap, query);
   };
 }
 
