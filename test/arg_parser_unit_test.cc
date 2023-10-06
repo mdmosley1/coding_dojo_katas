@@ -18,8 +18,12 @@ TEST(ArgParser, ParsesTwoArgs) {
   ASSERT_EQ(args('b'), "there");
 }
 
+TEST(ArgParser, ReturnsEmptyIfSchemaDoesNotMatchArgList) { 
+  ASSERT_EQ(ArgParse("a", "-b 2")('b'), "");
+}
+
 TEST(ArgParser, ReturnsEmptyIfUnrecognizedFlag) { 
-  ASSERT_EQ(ArgParse("a", "-b 2")('a'), "");
+  ASSERT_EQ(ArgParse("a", "-a 2")('b'), "");
 }
 
 /*
