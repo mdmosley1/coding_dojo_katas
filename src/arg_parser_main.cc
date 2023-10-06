@@ -3,7 +3,7 @@
 int main(int argc, char *argv[])
 {
 
-  ArgParser arg;
+  std::cout << "hello" << std::endl;
   
   return 0;
 }
