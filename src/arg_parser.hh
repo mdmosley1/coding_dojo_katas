@@ -72,12 +72,15 @@ std::string Parse(std::string schema, std::string args, char query) {
   // for each element in schema, find the arg in args list. If it
   // exists, then store it in a map
   std::map<char, std::string> flagsMap;
+
+  const char whitespace = ' ';
+  std::vector<std::string> words = split(args,whitespace);
   
   for (auto flag : schema) {
     std::string minus = "-";
     std::string query = minus.append(1, flag); 
 
-    std::vector<std::string> words = split(args,' ');
+    
     for (int w = 0; w < words.size(); ++w) {
       std::string word = words[w];
       if (word == query)
