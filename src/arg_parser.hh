@@ -63,11 +63,14 @@ std::string EraseWhiteSpace(const std::string& str)
   that's an error.
 */
 
-std::string Parse(std::map<char, std::string> flagsMap, char query) {
+std::optional<std::string> Parse(std::map<char, std::string> flagsMap, char query) {
   // for each element in the args list, check if it does not exist in
   // the scehma, return error.
   // if (!ValidateString(argsNoSpace, schema))
   //   return false;
+
+  if (flagsMap.find(query) == flagsMap.end())
+    return std::nullopt;
 
   // for each element in schema, find the arg in args list. If it
   // exists, then store it in a map

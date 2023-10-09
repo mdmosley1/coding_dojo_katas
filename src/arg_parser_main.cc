@@ -12,8 +12,9 @@ int main(int argc, char *argv[])
   auto args = ArgParse(schema, argList);
 
   for (auto flag : schema) {
-    if (args(flag) != "")
-      std::cout << flag << " : " << args(flag) << std::endl;
+    auto value = args(flag);
+    if (value)
+      std::cout << flag << " : " << *value << std::endl;
   }
 
   return 0;
