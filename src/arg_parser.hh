@@ -64,11 +64,6 @@ std::string EraseWhiteSpace(const std::string& str)
 */
 
 std::optional<std::string> Parse(std::map<char, std::string> flagsMap, char query) {
-  // for each element in the args list, check if it does not exist in
-  // the scehma, return error.
-  // if (!ValidateString(argsNoSpace, schema))
-  //   return false;
-
   if (flagsMap.find(query) == flagsMap.end())
     return std::nullopt;
 
@@ -77,23 +72,38 @@ std::optional<std::string> Parse(std::map<char, std::string> flagsMap, char quer
   return flagsMap[query];
 }
 
+std::map<char, std::string> FindArgThatMatchesFlagInSchema(const char flag,
+							   const std::vector<std::string>& argWords,
+							   const std::map<char, std::string>& flagsMap ) {
+
+  std::map<char, std::string> flagsMapCopy = flagsMap;
+
+  std::string minus = "-";
+  std::string query = minus.append(1, flag); // -a
+    
+  for (int w = 0; w < argWords.size(); ++w) {
+    std::string word = argWords[w];
+    if (word == query)
+      flagsMapCopy[flag] = argWords[w+1];
+  }
+  return flagsMapCopy;
+}
+
 auto ArgParse(std::string schema, std::string args)
 {
   std::map<char, std::string> flagsMap;
 
   const char whitespace = ' ';
-  std::vector<std::string> words = split(args,whitespace);
+  std::vector<std::string> argWords = split(args,whitespace);
   
   for (auto flag : schema) {
-    std::string minus = "-";
-    std::string query = minus.append(1, flag); 
-    
-    for (int w = 0; w < words.size(); ++w) {
-      std::string word = words[w];
-      if (word == query)
-	flagsMap[flag] = words[w+1];
-    }
-  }
+    flagsMap = FindArgThatMatchesFlagInSchema(flag, argWords, flagsMap);   }
+
+  // for each element in the args list, check if it exists in the
+  // scehma. If not, return return error.
+  // if (!ValidateString(argsNoSpace, schema))
+  //   return false;
+
 
   return [flagsMap](char query ) {
     return Parse(flagsMap, query);
