@@ -12,17 +12,17 @@
 #include <vector>
 
 void split(const std::string &s, char delim, std::vector<std::string> &elems) {
-    std::stringstream ss(s);
-    std::string item;
-    while (getline(ss, item, delim)) {
-        elems.push_back(item);
-    }
+  std::stringstream ss(s);
+  std::string item;
+  while (getline(ss, item, delim)) {
+    elems.push_back(item);
+  }
 }
 
 std::vector<std::string> split(const std::string &s, char delim) {
-    std::vector<std::string> elems;
-    split(s, delim, elems);
-    return elems;
+  std::vector<std::string> elems;
+  split(s, delim, elems);
+  return elems;
 }
 
 
@@ -63,15 +63,6 @@ std::string EraseWhiteSpace(const std::string& str)
   that's an error.
 */
 
-std::optional<std::string> Parse(std::map<char, std::string> flagsMap, char query) {
-  if (flagsMap.find(query) == flagsMap.end())
-    return std::nullopt;
-
-  // for each element in schema, find the arg in args list. If it
-  // exists, then store it in a map
-  return flagsMap[query];
-}
-
 std::map<char, std::string> FindArgThatMatchesFlagInSchema(const char flag,
 							   const std::vector<std::string>& argWords,
 							   const std::map<char, std::string>& flagsMap ) {
@@ -89,24 +80,34 @@ std::map<char, std::string> FindArgThatMatchesFlagInSchema(const char flag,
   return flagsMapCopy;
 }
 
-auto ArgParse(std::string schema, std::string args)
-{
-  std::map<char, std::string> flagsMap;
-
+std::optional<std::string> Parse(std::string schema,
+				 std::string args,
+				 char query) {
   const char whitespace = ' ';
   std::vector<std::string> argWords = split(args,whitespace);
   
+  std::map<char, std::string> flagsMap;
   for (auto flag : schema) {
     flagsMap = FindArgThatMatchesFlagInSchema(flag, argWords, flagsMap);   }
 
+  if (flagsMap.find(query) == flagsMap.end())
+    return std::nullopt;
+
+  // for each element in schema, find the arg in args list. If it
+  // exists, then store it in a map
+  return flagsMap[query];
+}
+
+auto ArgParse(std::string schema, std::string args)
+{ 
   // for each element in the args list, check if it exists in the
   // scehma. If not, return return error.
   // if (!ValidateString(argsNoSpace, schema))
   //   return false;
 
 
-  return [flagsMap](char query ) {
-    return Parse(flagsMap, query);
+  return [schema, args](char query ) {
+    return Parse(schema, args, query);
   };
 }
 
