@@ -10,6 +10,8 @@
 #include <functional>
 #include <map>
 #include <vector>
+#include "expected.hh"
+
 
 void split(const std::string &s, char delim, std::vector<std::string> &elems) {
   std::stringstream ss(s);
