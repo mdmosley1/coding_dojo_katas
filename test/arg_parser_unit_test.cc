@@ -26,8 +26,6 @@ TEST(ArgParser, ReturnsEmptyIfUnrecognizedFlag) {
   ASSERT_EQ(ArgParse("a", "-a 2")('b'), std::nullopt);
 }
 
-// TODO figure out if I can handle erros with std::oeptional
-
 // TODO roll my own version of std expected for error handling
 
 // TODO assign default values for flags that do not get assigned
