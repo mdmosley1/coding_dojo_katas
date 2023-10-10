@@ -18,8 +18,8 @@ TEST(ArgParser, ParsesTwoArgs) {
   ASSERT_EQ(args('b'), "there");
 }
 
-TEST(ArgParser, ReturnsEmptyIfSchemaDoesNotMatchArgList) { 
-  ASSERT_EQ(ArgParse("a", "-b 2")('b'), std::nullopt);
+TEST(ArgParser, ReturnsEmptyIfSchemaDoesNotMatchArgList) {
+  EXPECT_THROW(ArgParse("a", "-b 2"), std::invalid_argument);
 }
 
 TEST(ArgParser, ReturnsEmptyIfUnrecognizedFlag) { 

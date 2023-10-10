@@ -28,15 +28,15 @@ std::vector<std::string> split(const std::string &s, char delim) {
 }
 
 
-bool ValidateString(const std::string& newString, const std::string schema) {
-  if (newString.size() < 2)
+bool ValidateString(const std::string& args, const std::string schema) {
+  if (args.size() < 2)
     return false;
 
   // find all flags and verify that no unrecognized flags were
   // passed
-  for (int index = 0; index < newString.size()-1; ++index) {
-    if (newString[index] == '-'){
-      char nextLetter = newString[index+1];
+  for (int index = 0; index < args.size()-1; ++index) {
+    if (args[index] == '-'){
+      char nextLetter = args[index+1];
       // if last char was a minus, then this char is the flag
       if (schema.find(nextLetter) == std::string::npos) {
 	std::cout << "Arg " << nextLetter << " not recognized!" << std::endl;
@@ -103,9 +103,9 @@ std::optional<std::string> Parse(std::string schema,
 auto ArgParse(std::string schema, std::string args)
 { 
   // for each element in the args list, check if it exists in the
-  // scehma. If not, return return error.
-  // if (!ValidateString(argsNoSpace, schema))
-  //   return false;
+  // scehma. If not, that's a user error so we should throw exception
+   if (!ValidateString(args, schema))
+     throw std::invalid_argument("arg not found in schema");
 
 
   return [schema, args](char query ) {
